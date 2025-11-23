@@ -8,16 +8,16 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Request, Response } from "express";
-import { AuthService } from "./auth.service";
-import { AuthDtoInput } from "./dto/auth.dto.input";
-import { CreateUserDto } from "../users/dto/user.dto.input";
-import { UserResponseDto } from "../users/dto/user.dto.response";
-import { AuthResponseDto } from "./dto/auth.dto.response";
+import { AuthService } from "../infrastructure/services/auth.service";
+import { AuthDtoInput } from "../dto/auth.dto.input";
+import { NewUserDtoInput } from "../dto/auth.dto.input";
+import { UserResponseDto } from "../../users/dto/user.dto.response";
+import { AuthResponseDto } from "../dto/auth.dto.response";
 import {
   REFRESH_TOKEN_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_OPTIONS,
-} from "./auth.constants";
-import { Public } from "./jwt/public.decorator";
+} from "../infrastructure/constants/auth.constants";
+import { Public } from "../jwt/public.decorator";
 import { plainToInstance } from "class-transformer";
 
 @Controller("auth")
@@ -32,13 +32,11 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response
   ): Promise<AuthResponseDto> {
     const { email, password } = body;
-    const user = await this.authService.validateUser(email, password);
-
     const {
       accessToken,
       refreshToken,
       user: userData,
-    } = await this.authService.generateTokensWithUser(user._id);
+    } = await this.authService.login(email, password);
 
     res.cookie(
       REFRESH_TOKEN_COOKIE_NAME,
@@ -85,7 +83,7 @@ export class AuthController {
   @Public()
   @Post("new")
   @HttpCode(201)
-  async newUser(@Body() body: CreateUserDto): Promise<UserResponseDto> {
-    return await this.authService.createUser(body);
+  async newUser(@Body() body: NewUserDtoInput): Promise<UserResponseDto> {
+    return await this.authService.register(body);
   }
 }

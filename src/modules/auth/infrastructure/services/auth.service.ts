@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { UsersService } from "../users/users.service";
-import { UserResponseDto } from "../users/dto/user.dto.response";
-import { NewUserDtoInput } from "./dto/auth.dto.input";
+import { UsersService } from "../../../users/users.service";
+import { IUser } from "../../../users/users.types";
+import { TokenService } from "./jwt.service";
+import { UserResponseDto } from "../../../users/dto/user.dto.response";
+import { NewUserDtoInput } from "../../dto/auth.dto.input";
 import * as bcrypt from "bcrypt";
-import { IUser } from "../users/users.types";
-import { TokenService } from "./jwt/jwt.service";
 
 @Injectable()
 export class AuthService {
@@ -29,7 +29,38 @@ export class AuthService {
     return user;
   }
 
-  async refreshTokens(refreshToken: string) {
+  async login(
+    email: string,
+    password: string
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    user: UserResponseDto;
+  }> {
+    const user = await this.validateUser(email, password);
+
+    const { accessToken, refreshToken } = this.tokenService.generateTokens(
+      user._id
+    );
+
+    const userData = await this.usersService.findById(user._id);
+
+    return {
+      accessToken,
+      refreshToken,
+      user: userData,
+    };
+  }
+
+  async register(createUserDto: NewUserDtoInput): Promise<UserResponseDto> {
+    return await this.usersService.create(createUserDto);
+  }
+
+  async refreshTokens(refreshToken: string): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    user: UserResponseDto;
+  }> {
     const payload = this.tokenService.verifyRefreshToken(refreshToken);
     const userId = payload.sub as string;
 
@@ -45,11 +76,11 @@ export class AuthService {
     };
   }
 
-  async createUser(body: NewUserDtoInput): Promise<UserResponseDto> {
-    return await this.usersService.create(body);
-  }
-
-  async generateTokensWithUser(userId: string) {
+  async generateTokensWithUser(userId: string): Promise<{
+    accessToken: string;
+    refreshToken: string;
+    user: UserResponseDto;
+  }> {
     const user = await this.usersService.findById(userId);
     const { accessToken, refreshToken } =
       this.tokenService.generateTokens(userId);

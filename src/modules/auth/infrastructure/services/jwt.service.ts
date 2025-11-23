@@ -12,7 +12,7 @@ import {
 import {
   ACCESS_TOKEN_EXPIRATION_TIME,
   REFRESH_TOKEN_EXPIRATION_TIME,
-} from "../auth.constants";
+} from "../constants/auth.constants";
 
 @Injectable()
 export class TokenService {
