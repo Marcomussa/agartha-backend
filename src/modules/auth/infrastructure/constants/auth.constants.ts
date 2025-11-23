@@ -13,3 +13,7 @@ export const REFRESH_TOKEN_COOKIE_OPTIONS: CookieOptions = {
 
 export const ACCESS_TOKEN_EXPIRATION_TIME = "15m";
 export const REFRESH_TOKEN_EXPIRATION_TIME = "7d";
+
+export const GOOGLE_ENDPOINTS = {
+  AUTHORIZATION: "/o/oauth2/v2/auth",
+} as const;

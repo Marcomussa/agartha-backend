@@ -1,10 +1,10 @@
 import { Module } from "@nestjs/common";
-import { OAuthController } from "./presentation/oauth.controller";
-import { AuthorizeUserUseCase } from "./domain/use-cases/authorize-user.use-case";
+import { OAuthController } from "../auth/presentation/oauth.controller";
+import { AuthorizeUserUseCase } from "../auth/domain/use-cases/authorize-user.use-case";
 import { MercadoPagoApiAdapter } from "./infrastructure/adapters/mercado-pago-api.adapter";
 import { PkceService } from "./infrastructure/services/pkce.service";
 import { UsersModule } from "../users/users.module";
-import { IMercadoPagoApiPort } from "./domain/ports/mercado-pago-api.port";
+import { IMercadoPagoApiPort } from "../auth/domain/ports/mercado-pago-api.port";
 
 @Module({
   imports: [UsersModule],

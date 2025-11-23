@@ -21,12 +21,17 @@ export const CONFIG = {
     DB: Number(process.env.REDIS_DB) || 0,
   },
 
+  GOOGLE: {
+    AUTH_BASE_URL: "https://accounts.google.com/o/oauth2/v2/auth",
+    CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    REDIRECT_URI: `${BASE_URL}/${API_PREFIX}/oauth/google/callback`,
+  },
+
   MERCADOPAGO: {
     CLIENT_ID: process.env.MERCADOPAGO_CLIENT_ID,
     CLIENT_SECRET: process.env.MERCADOPAGO_CLIENT_SECRET,
-    REDIRECT_URI:
-      process.env.MERCADOPAGO_REDIRECT_URI ||
-      `${BASE_URL}/${API_PREFIX}/oauth/callback`,
+    REDIRECT_URI: `${BASE_URL}/${API_PREFIX}/oauth/mercadopago/callback`,
     API_BASE_URL:
       process.env.MERCADOPAGO_API_BASE_URL || "https://api.mercadopago.com",
     AUTH_BASE_URL: "https://auth.mercadopago.com",

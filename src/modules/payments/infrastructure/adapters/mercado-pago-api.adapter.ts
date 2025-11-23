@@ -6,7 +6,7 @@ import {
   IMercadoPagoApiPort,
   OAuthTokenRequest,
   OAuthTokenResponse,
-} from "../../domain/ports/mercado-pago-api.port";
+} from "../../../auth/domain/ports/mercado-pago-api.port";
 
 @Injectable()
 export class MercadoPagoApiAdapter implements IMercadoPagoApiPort {

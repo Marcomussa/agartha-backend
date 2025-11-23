@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
-import { IAuthDtoInput, INewUserDtoInput } from "../domain/types/auth.types";
+import { IAuthDtoInput, INewUserDtoInput } from "../domain/ports/auth.ports";
 
 export class AuthDtoInput implements IAuthDtoInput {
   @IsEmail()

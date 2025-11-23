@@ -1,11 +1,13 @@
 import { Controller, Get, Query, Res } from "@nestjs/common";
 import { Response } from "express";
-import { CurrentUser } from "../../auth/jwt/current-user.decorator";
-import { Public } from "../../auth/jwt/public.decorator";
+import { CurrentUser } from "../jwt/current-user.decorator";
+import { Public } from "../jwt/public.decorator";
 import { AuthorizeUserUseCase } from "../domain/use-cases/authorize-user.use-case";
-import { OAuthCallbackDto } from "../application/dto/oauth-callback.dto.input";
+import { OAuthCallbackDto } from "../dto/oauth-callback.dto.input";
 import { CONFIG } from "../../../core/config";
-import { MERCADOPAGO_ENDPOINTS } from "../infrastructure/constants/mercado-pago.constants";
+import { MERCADOPAGO_ENDPOINTS } from "../../payments/infrastructure/constants/mercado-pago.constants";
+import qs from "qs";
+import { GOOGLE_ENDPOINTS } from "../infrastructure/constants/auth.constants";
 
 //TODO: Add PKCE and Redis Implementation
 // import { PkceService } from "../infrastructure/services/pkce.service";
@@ -37,7 +39,29 @@ export class OAuthController {
   }
 
   @Public()
-  @Get("callback")
+  @Get("google")
+  redirectToGoogle(@Res() res: Response) {
+    const authUrl = new URL(
+      GOOGLE_ENDPOINTS.AUTHORIZATION,
+      CONFIG.GOOGLE.AUTH_BASE_URL
+    );
+
+    const options = {
+      redirect_uri: CONFIG.GOOGLE.REDIRECT_URI,
+      client_id: CONFIG.GOOGLE.CLIENT_ID!,
+      access_type: "offline",
+      response_type: "code",
+      prompt: "consent",
+      scope: ["openid", "email", "profile"].join(" "),
+    };
+
+    const redirectUrl = `${authUrl}?${qs.stringify(options)}`;
+
+    return res.redirect(redirectUrl);
+  }
+
+  @Public()
+  @Get("mercadopago/callback")
   async handleCallback(
     @Query() query: OAuthCallbackDto,
     @Res() res: Response
