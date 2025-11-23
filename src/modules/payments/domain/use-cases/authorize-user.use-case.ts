@@ -16,9 +16,9 @@ export class AuthorizeUserUseCase {
     const tokenRequest = {
       grant_type: "authorization_code" as const,
       code,
-      redirect_uri: CONFIG.MERCADOPAGO.REDIRECT_URI,
-      client_id: CONFIG.MERCADOPAGO.CLIENT_ID,
-      client_secret: CONFIG.MERCADOPAGO.CLIENT_SECRET,
+      redirect_uri: CONFIG.MERCADOPAGO.REDIRECT_URI!,
+      client_id: CONFIG.MERCADOPAGO.CLIENT_ID!,
+      client_secret: CONFIG.MERCADOPAGO.CLIENT_SECRET!,
     };
 
     const tokenResponse = await this.mercadoPagoApi.exchangeCodeForTokens(

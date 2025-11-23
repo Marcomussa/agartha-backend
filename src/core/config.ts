@@ -21,19 +21,9 @@ export const CONFIG = {
     DB: Number(process.env.REDIS_DB) || 0,
   },
 
-  SERVICES: {
-    FEAR_AND_GREED: {
-      BASE_URL: "https://api.alternative.me",
-    },
-  },
-
   MERCADOPAGO: {
-    CLIENT_ID:
-      process.env.MERCADOPAGO_CLIENT_ID ||
-      "TEST-43b916be-6910-4098-8f92-8d8fc47eb571",
-    CLIENT_SECRET:
-      process.env.MERCADOPAGO_CLIENT_SECRET ||
-      "TEST-6981157992426738-112222-a12fbb928c9c6d36ae93162bd8f504ba-235303214",
+    CLIENT_ID: process.env.MERCADOPAGO_CLIENT_ID,
+    CLIENT_SECRET: process.env.MERCADOPAGO_CLIENT_SECRET,
     REDIRECT_URI:
       process.env.MERCADOPAGO_REDIRECT_URI ||
       `${BASE_URL}/${API_PREFIX}/oauth/callback`,

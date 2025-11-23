@@ -4,7 +4,7 @@
   "description": "Agarta Backend - Hexagonal Architecture",
   "main": "dist/app/server.js",
   "scripts": {
-    "build": "tsc",
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 tsc",
     "start": "node -r reflect-metadata dist/app/server.js",
     "dev": "nodemon",
     "watch": "tsc --watch"

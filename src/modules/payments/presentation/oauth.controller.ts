@@ -25,7 +25,7 @@ export class OAuthController {
       CONFIG.MERCADOPAGO.AUTH_BASE_URL
     );
 
-    authUrl.searchParams.append("client_id", CONFIG.MERCADOPAGO.CLIENT_ID);
+    authUrl.searchParams.append("client_id", CONFIG.MERCADOPAGO.CLIENT_ID!);
     authUrl.searchParams.append("response_type", "code");
     authUrl.searchParams.append(
       "redirect_uri",
